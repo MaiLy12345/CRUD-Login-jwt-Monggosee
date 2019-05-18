@@ -1,0 +1,31 @@
+{
+  "name": "crud-login-jwt-monggosee",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaiLy12345/CRUD-Login-jwt-Monggosee.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaiLy12345/CRUD-Login-jwt-Monggosee/issues"
+  },
+  "homepage": "https://github.com/MaiLy12345/CRUD-Login-jwt-Monggosee#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parse": "^0.1.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.0",
+    "express-validation": "^1.0.2",
+    "express-validator": "^5.3.1",
+    "joi": "^14.3.1",
+    "joi-objectid": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.5.9"
+  }
+}

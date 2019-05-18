@@ -1,0 +1,12 @@
+{
+	
+	"name": "ADMIN",
+	"userId": "5cd772f3c501df211423648c",
+	"price": 120000,
+	"color": ["red"],
+	"isAvailable": true,
+	"payload": {
+		"expiredAt": "10-10-2020",
+		"releasedAt": "10-10-2019"
+	}
+}
