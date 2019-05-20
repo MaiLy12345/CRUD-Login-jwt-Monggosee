@@ -38,7 +38,7 @@ const login = async (req, res, next) => {
         if (!isValidatePassword) {
             return next(new Error('password_is_incorrect'));
         }
-        var token = jwt.sign({ username }, 'shhhhh', { expiresIn: 5*60 } );
+        const token = jwt.sign({ username }, 'shhhhh', { expiresIn: 5*60 } );
         return res.status(201).json({
             message: "login successfully",
             access_token: token
