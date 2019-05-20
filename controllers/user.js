@@ -1,17 +1,17 @@
 
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs')
 const User = require('../models/user.js');
 
 const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const userDelete = await User.findOneAndDelete({_id: id}).lean().select('_id username');
+        const userDelete = await User.findOneAndDelete({ _id: id }).lean().select('_id username');
         if (!userDelete) {
             return next(new Error('user_not_found'));
         }
         return res.status(200).json({
-            message : 'delete user successful',
+            message: 'delete user successful',
             data: userDelete
         });
     } catch (e) {
@@ -22,28 +22,30 @@ const deleteUser = async (req, res, next) => {
 const login = async (req, res, next) => {
     try {
         const { username, password } = req.body;
-        const salt  = bcrypt.genSaltSync('10');
+        console.log(username)
+        const salt = bcrypt.genSaltSync(2);
+        console.log(salt)
         const hashPassword = bcrypt.hashSync(password, salt);
-        const newUser = {
-            username,
-            password: hashPassword
-        };
+
         const user = await User.findOne({
             username
         });
+        console.log(user.password)
         if (!user) {
             return next(new Error('account_not_existed'));
         }
         const isValidatePassword = bcrypt.compareSync(password, user.password);
+        console.log(isValidatePassword)
         if (!isValidatePassword) {
             return next(new Error('password_is_incorrect'));
         }
-        const token = jwt.sign({ username }, 'shhhhh', { expiresIn: 5*60 } );
+        const token = jwt.sign({ username }, 'shhhhh', { expiresIn: 5 * 60 });
         return res.status(201).json({
             message: "login successfully",
             access_token: token
         });
     } catch (e) {
+        console.log(e)
         return next(e);
     }
 };
@@ -58,7 +60,7 @@ const createUser = async (req, res, next) => {
 
         const newUser = new User({
             username,
-            password : hashPassword
+            password: hashPassword
         });
         const creatUser = await newUser.save();
         return res.status(200).json({
@@ -70,7 +72,7 @@ const createUser = async (req, res, next) => {
     };
 }
 const getListUser = async (req, res, next) => {
-    try {     
+    try {
         const users = await User.find().lean().select('username');
         if (!users) {
             return next(new Error('No_data'));
@@ -87,7 +89,7 @@ const getListUser = async (req, res, next) => {
 const getUser = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const user = await User.findOne({_id: id}).select('username').lean();        
+        const user = await User.findOne({ _id: id }).select('username').lean();
         if (!user) {
             return next(new Error('User_not_found'));
         }
@@ -107,27 +109,27 @@ const updateUser = async (req, res, next) => {
             username,
             password
         } = req.body;
-        
+
         const salt = bcrypt.genSaltSync(2);
         const hashPassword = bcrypt.hashSync(password, salt);
         const newValues = {
             username,
             password: hashPassword
         }
-        Object.keys(newValues).forEach(function(key) {
+        Object.keys(newValues).forEach(function (key) {
             if (newValues[key] === undefined) {
                 delete newValues[key];
             }
         });
         const updateInfo = { $set: newValues };
-        const userUpdate = await User.findOneAndUpdate({_id: id}, updateInfo, {
+        const userUpdate = await User.findOneAndUpdate({ _id: id }, updateInfo, {
             new: true
         }).lean();
         if (!userUpdate) {
             return next(new Error('user_not_found'));
         }
         return res.status(200).json({
-            message : 'update successful',
+            message: 'update successful',
             data: userUpdate,
             data_update: newValues
         });
